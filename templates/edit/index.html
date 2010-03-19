@@ -1,0 +1,173 @@
+<!doctype html>
+<html>
+	<head>
+	<link rel="stylesheet" href="<%= asset %>/screen.css" type="text/css"/>
+	<style type="text/css">
+	</style>
+	<script src="/_utils/script/jquery.js"></script>
+	<script src="/_utils/script/jquery.couch.js"></script>
+	<script src="<%= asset %>/jquery.example.js"></script>
+	<script type="text/javascript">
+	var recipe = <%= doc %>
+	function addIngredient(vdesc, vquantity, vunit) {
+		
+		function addInput(name, size, value) {
+			var input = document.createElement('input')
+			input.setAttribute('type', 'text')
+			desc.setAttribute('size', size)
+			desc.setAttribute('id', name)
+			desc.setAttribute('name', name)
+			if (value) desc.value = value
+			return input
+		}
+
+		var desc = add_input('ingredient', 30, vdesc)		
+		var quantity = add_input('quantity', 5, vquantity)		
+		var unit = add_input('unit', 5, vunit)
+		var button = document.createElement('button')
+		button.setAttribute('class', 'delete')
+		var para = $('p#ingredients')
+		var br = document.createElement('br')
+		para.append(br)
+		para.append(desc)
+		para.append(quantity)
+		para.append(unit)
+		para.append(button)
+		$(button).click(function(e) {
+			e.preventDefault()
+			para[0].removeChild(br)
+			para[0].removeChild(desc)
+			para[0].removeChild(quantity)
+			para[0].removeChild(unit)
+			para[0].removeChild(button)
+		})
+		$(input).example(name)
+		return input
+	}
+	function fromRecipe() {
+		$('#title').val(recipe.title)
+		if (recipe.ingredients && recipe.ingredients.length) {
+			for (attr in ingredients[0]) {
+				$('#ingredients > #' + attr).val(recipe.ingredient[0][attr])
+			}
+			for (var i = 1; i < recipe.ingredients.length; ++i) {
+				addIngredient(recipe.ingredient[i].ingredient,
+							  recipe.ingredient[i].quantity,
+							  recipe.ingredient[i].unit)
+			}
+		}
+	}
+	function toRecipe() {
+		function ingredients() {
+			var a = null
+			$('p#ingredients > ingredient').each(function(i) {
+				var d = null
+				$(this).children('input').each(function(i) {
+					if (this.value && this.value.length 
+						&& this.value != this.name) {
+						if (!d) d = {}
+						d[this.id] = this.value
+					}
+				})
+				if (!a) a = []
+				a.push(d)
+			})
+			return a
+		}
+		var d =  { '_id': recipe._id, '_rev': recipe._rev,
+				   'type': 'recipe',
+				   'ingredients': ingredients(),
+				   'description': recipe.description }
+
+		// delete empty attributes
+		for (attr in d) {
+			if (!d[attr]) {
+				delete d[attr]
+			}
+		}
+
+		return d
+	}
+	$(document).ready(function() {
+		if('<%= action %>' == 'create') {
+			$('.delete').remove()
+		}
+		else {
+			$('.delete').click(function(e) {
+				e.preventDefault()
+				var doc = { '_id': recipe._id, '_rev': recipe._rev }
+				// alert(JSON.stringify(doc))
+				$.couch.db('recipes').removeDoc(doc, {
+					success: function(resp) {
+						// alert(JSON.stringify(resp))
+						document.location.href =  document.location.protocol 
+							+ '//' + document.location.host + '<%= index %>'
+					}
+				})
+			})
+		}
+		$("#isearch").keypress(function (e) {
+			code = e.keyCode ? e.keyCode : e.which;
+			if (code == 13) {
+				// Reload the page from the database
+				var p = document.location.pathname.split('/')
+				p.splice(4, 3, '_list', 'index', 'by-title')
+				var href = document.location.protocol 
+					+ '//' + document.location.host + p.join('/')
+				var key = $(this).val()
+				if (key.length) {
+					href = href + '?key=' + JSON.stringify(key)
+				}
+				document.location.href = href
+			}
+		})
+		$("#isearch").focus()
+		$('#ingredients > #ingredient > .add').click(function(e) { 
+			e.preventDefault()
+			addIngredient(null, null, null) })
+		fromRecipe()
+		$('input').each(function() {
+			$(this).example(this.name)
+		})
+		$("form#edit").submit(function(e) {
+			e.preventDefault()
+			$.couch.db('recipes').saveDoc(toRecipe(), { 
+				// alert(JSON.stringify(toRecipe()))
+				success: function(resp) {
+					// alert(JSON.stringify(resp))
+					var p = document.location.pathname.split('/')
+					p.splice(5, 2, 'edit', resp.id)
+					document.location.href = document.location.protocol 
+						+ '//' + document.location.host + p.join('/')
+				}
+			})
+		})
+	})
+    </script>
+	<title>Recipes - <%= action %> recipe</title>
+  </head>
+  <body>
+    <div id="header">
+      <h2><a href="<%= index %>">Recipes</a></h2>
+	  <input id="isearch" type="text" name="search" size=32>
+	  <span id="edit"><%= action %> recipe</span>
+	</div>
+	<div id="content">
+	  <form id="edit">
+		<p id="title">Title:<br>
+		  <input type="text" size="40" id="title" name="title" />
+		</p>
+		<p id="ingredients">Ingredients:<br>
+		  <span id="ingredient">
+			<input type="text" size="30" id="description" name="description"/><input type="text" size="5" id="quantity" name="quant"/><input type="text" size="5" id="unit" name="unit"/><button class="add">
+		  </span>
+		</p>
+		<p id="description">Description:<br>
+		  <input type="textarea" size="40" id="description" name="description"/>
+		</p>
+		<button class="save">save</button>
+		<button class="delete">delete</button>
+	  </form>
+	</div>
+  </body>
+</html>

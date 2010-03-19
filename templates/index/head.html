@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Couchpotato</title>
+    <link rel="stylesheet" href="../../screen.css" type="text/css"/>
+	<script src="/_utils/script/json2.js"></script>
+	<script src="/_utils/script/jquery.js"></script>
+	<script src="/_utils/script/jquery.couch.js"></script>
+	<script src="<%= asset %>/jquery.example.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function() {
+		$("#isearch").example('search')
+		$("#isearch").focus()
+
+		// $("#isearch").width($("#content").width() - 10)
+
+        $("#isearch").keypress(function(e) {
+			code = e.keyCode ? e.keyCode : e.which
+			if (code == 13) {
+				var href = document.location.protocol + '//' 
+					+ document.location.host + document.location.pathname
+				var key = $(this).val()
+				if (key.length) {
+					href = href + '?key=' + JSON.stringify(key.toLowerCase())
+				}
+				document.location.href = href
+			}
+        })
+	})
+    function _delete(id, rev, name) {
+		var doc = { '_id': id, '_rev': rev }
+		// alert(JSON.stringify(doc))
+		if (confirm("Delete " + name + '?')) {
+			$.couch.db('addressbook').removeDoc(doc, {
+				success: function(resp) {
+					document.location.reload()
+				}
+			})
+		}
+	}
+	</script>
+  </head>
+  <body>
+    <div id="header">
+	  <h2><a href="<%= index %>">Recipes</a></h2>
+	  <input id="isearch" type="text" name="key" size=32>
+	  <a id="edit" href="../../_show/create">create new recipe</a>
+	</div>
+    <div id="content">

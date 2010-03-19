@@ -1,0 +1,127 @@
+body {
+	font-family: Georgia, serif;
+	margin:0;
+	padding:0;
+}
+
+input {
+	font-family: Georgia, serif;
+	border: 0px;
+	font-size:100%;
+}	
+
+a {
+	text-decoration:none;
+}
+
+h1 {
+  padding:6px;
+  margin:0;
+  line-height:1.2em;
+}
+
+h2 {
+	display:inline;
+	padding:0;
+	margin:0;
+	line-height:1em;
+	font-size:112%;
+}
+
+h3 {
+  margin-bottom:0;
+  margin-top:4px;
+}
+
+h4 {
+  margin:4px;
+}
+
+.example
+{
+	color: #aaa;
+}
+
+#header {
+	background:#666;
+	padding:8px;
+	/* text-shadow: 0 0 4px #000; */
+	font-family: "Lucida Grande", Verdana, sans-serif;
+	color:#fff;
+	margin:0;
+}
+
+#header input {
+	margin-left:16px;
+	font-family: "Lucida Grande", Verdana, sans-serif;
+	font-size:98%;
+}
+
+#header a {
+	color:#fff;
+}
+
+#header #login, #header #edit {
+	float:right;
+}
+
+#content {
+  padding:10px;
+  background:#f2f2f2;
+/*  float:left;*/
+  margin:0;
+}
+
+ul {
+  margin:0;
+  list-style: none;
+  padding:0 20px;
+}
+
+.body ul {
+  list-style: disc;
+}
+
+form {
+  padding:10px;
+/*  background:#ddd;*/
+}
+
+/* Toolbar */
+.toolbar { 
+	font-size: 90%; 
+	/* line-height: 16px;  */
+	list-style: none;
+	margin: 0 0 .5em; 
+	padding: 5px 5px 5px 3px;
+}
+.toolbar li { 
+	display: inline; 
+}
+button { 
+	background: transparent 2px 2px no-repeat; 
+	border: none;
+	color: #666; 
+	margin: 0; 
+	padding: 2px 1em 2px 22px; cursor: pointer;
+	font-size: 95%; 
+	line-height: 16px;
+}
+button:hover { 
+	background-position: 2px -30px; 
+	color: #000; 
+}
+button:active { 
+	background-position: 2px -62px; 
+	color: #000; 
+}
+button.delete { 
+	background-image: url("delete.png"); 
+}
+button.add { 
+	background-image: url("add.png"); 
+}
+button.save { 
+	background-image: url("save.png"); 
+}
+

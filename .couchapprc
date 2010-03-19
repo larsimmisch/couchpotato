@@ -1,0 +1,7 @@
+{	
+	"env": {
+        "default": {
+			"db": "http://lars:33rpm@localhost:5984/recipes"
+	   	}
+	}
+}
