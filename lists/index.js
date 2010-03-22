@@ -25,15 +25,13 @@ function(head, req) {
 	}
 
 	function renderRecipe(recipe) {
-		var s = '<p>' + recipe.title + '</p>'
+		var s = '<p><a href="' + showPath('edit', recipe._id)
+			+ '">' + recipe.title + '</a>' 
+			+ ' <button class="delete" onclick="_delete('
+			+ "'" + recipe._id + "', '" + recipe._rev + "', '" + recipe.title 
+			+ "'" +')">delete' + '</button></p>'
 
-		return s + '\n<ul class="toolbar">'
-			+ '<li><a href="' + showPath('edit', card._id)
-			+ '"><button class="edit">&rarr edit</button></a></li>'
-			+ '<li><button class="delete" onclick="_delete('
-			+ "'" + card._id + "', '" + card._rev + "', '" + name + "'"
-			+')">delete' + '</button></li>'
-			+ '</ul><hr>\n';
+		return s
 	}
 	
 	provides("html", function() {
