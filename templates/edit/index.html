@@ -11,56 +11,57 @@
 	var recipe = <%= doc %>
 	function addIngredient(vdesc, vquantity, vunit) {
 		
-		function addInput(name, size, value) {
+		function addInput(id, name, size, value) {
 			var input = document.createElement('input')
 			input.setAttribute('type', 'text')
-			desc.setAttribute('size', size)
-			desc.setAttribute('id', name)
-			desc.setAttribute('name', name)
-			if (value) desc.value = value
+			input.setAttribute('size', size)
+			input.setAttribute('id', id)
+			input.setAttribute('name', name)
+			if (value) input.value = value
+			$(input).example(name)
 			return input
 		}
 
-		var desc = add_input('ingredient', 30, vdesc)		
-		var quantity = add_input('quantity', 5, vquantity)		
-		var unit = add_input('unit', 5, vunit)
+		var desc = addInput('name', 'ingredient', 30, vdesc)
+		var quantity = addInput('quantity', 'quant', 5, vquantity)		
+		var unit = addInput('unit', 'unit', 5, vunit)
 		var button = document.createElement('button')
 		button.setAttribute('class', 'delete')
 		var para = $('p#ingredients')
 		var br = document.createElement('br')
+		var span = $(document.createElement('span'))
+		span.attr('id', 'ingredient')
 		para.append(br)
-		para.append(desc)
-		para.append(quantity)
-		para.append(unit)
-		para.append(button)
+		span.append(desc)
+		span.append(quantity)
+		span.append(unit)
+		span.append(button)
+		para.append($(span))
 		$(button).click(function(e) {
 			e.preventDefault()
 			para[0].removeChild(br)
-			para[0].removeChild(desc)
-			para[0].removeChild(quantity)
-			para[0].removeChild(unit)
-			para[0].removeChild(button)
+			para[0].removeChild(span[0])
 		})
-		$(input).example(name)
-		return input
 	}
 	function fromRecipe() {
-		$('#title').val(recipe.title)
+		$('#title > #title').val(recipe.title)
+		$('#title > #serves').val(recipe.serves)
+		$('textarea#description').val(recipe.description)
 		if (recipe.ingredients && recipe.ingredients.length) {
-			for (attr in ingredients[0]) {
-				$('#ingredients > #' + attr).val(recipe.ingredient[0][attr])
+			for (attr in recipe.ingredients[0]) {
+				$('#ingredients > #ingredient > #' + attr).val(recipe.ingredients[0][attr])
 			}
 			for (var i = 1; i < recipe.ingredients.length; ++i) {
-				addIngredient(recipe.ingredient[i].ingredient,
-							  recipe.ingredient[i].quantity,
-							  recipe.ingredient[i].unit)
+				addIngredient(recipe.ingredients[i].name,
+							  recipe.ingredients[i].quantity,
+							  recipe.ingredients[i].unit)
 			}
 		}
 	}
 	function toRecipe() {
 		function ingredients() {
 			var a = null
-			$('p#ingredients > ingredient').each(function(i) {
+			$('p#ingredients > #ingredient').each(function(i) {
 				var d = null
 				$(this).children('input').each(function(i) {
 					if (this.value && this.value.length 
@@ -76,8 +77,10 @@
 		}
 		var d =  { '_id': recipe._id, '_rev': recipe._rev,
 				   'type': 'recipe',
+				   'serves': $('#title > #serves').val(),
+				   'title': $('#title > #title').val(),
 				   'ingredients': ingredients(),
-				   'description': recipe.description }
+				   'description': $('#description').val() }
 
 		// delete empty attributes
 		for (attr in d) {
@@ -150,21 +153,20 @@
     <div id="header">
       <h2><a href="<%= index %>">Recipes</a></h2>
 	  <input id="isearch" type="text" name="search" size=32>
-	  <span id="edit"><%= action %> recipe</span>
+	  <a id="edit" href="../../_show/create">create new recipe</a>
 	</div>
 	<div id="content">
 	  <form id="edit">
-		<p id="title">Title:<br>
-		  <input type="text" size="40" id="title" name="title" />
+		<p id="title">
+		  <input type="text" size="40" id="title" name="title" /> <input type="text" size="5" id="serves" name="serves" />people
 		</p>
-		<p id="ingredients">Ingredients:<br>
+		<p id="ingredients">
 		  <span id="ingredient">
-			<input type="text" size="30" id="description" name="description"/><input type="text" size="5" id="quantity" name="quant"/><input type="text" size="5" id="unit" name="unit"/><button class="add">
+			<input type="text" size="30" id="name" name="ingredient"/><input type="text" size="5" id="quantity" name="quant"/><input type="text" size="5" id="unit" name="unit"/><button class="add">
 		  </span>
 		</p>
-		<p id="description">Description:<br>
-		  <input type="textarea" size="40" id="description" name="description"/>
-		</p>
+		<textarea id="description" cols="80" rows="20" id="description" name="description"></textarea>
+		<br>
 		<button class="save">save</button>
 		<button class="delete">delete</button>
 	  </form>
