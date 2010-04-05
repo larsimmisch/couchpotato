@@ -8,5 +8,6 @@ function(doc, req) {
 		index: listPath('index', 'by-title'),
 		asset: assetPath(),
 		action: 'create',
+		loc_action: 'anlegen',
 		doc: '{}' });
 }

@@ -29,7 +29,7 @@ function(head, req) {
 			+ '">' + recipe.title + '</a>' 
 			+ ' <button class="delete" onclick="_delete('
 			+ "'" + recipe._id + "', '" + recipe._rev + "', '" + recipe.title 
-			+ "'" +')">delete' + '</button></p>'
+			+ "'" +')">l\u00f6schen' + '</button></p>'
 
 		return s
 	}

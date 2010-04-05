@@ -147,18 +147,18 @@
 		})
 	})
     </script>
-	<title>Recipes - <%= action %> recipe</title>
+	<title>Rezepte - <%= loc_action %></title>
   </head>
   <body>
     <div id="header">
-      <h2><a href="<%= index %>">Recipes</a></h2>
+      <h2><a href="<%= index %>">Rezepte</a></h2>
 	  <input id="isearch" type="text" name="search" size=32>
-	  <a id="edit" href="../../_show/create">create new recipe</a>
+	  <a id="edit" href="../../_show/create">anlegen</a>
 	</div>
 	<div id="content">
 	  <form id="edit">
 		<p id="title">
-		  <input type="text" size="40" id="title" name="title" /> <input type="text" size="5" id="serves" name="serves" />people
+		  <input type="text" size="40" id="title" name="title" /> <input type="text" size="5" id="serves" name="serves" />Personen
 		</p>
 		<p id="ingredients">
 		  <span id="ingredient">
@@ -167,8 +167,8 @@
 		</p>
 		<textarea id="description" cols="80" rows="20" id="description" name="description"></textarea>
 		<br>
-		<button class="save">save</button>
-		<button class="delete">delete</button>
+		<button class="save">sichern</button>
+		<button class="delete">l\u00f6schen</button>
 	  </form>
 	</div>
   </body>

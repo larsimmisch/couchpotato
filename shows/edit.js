@@ -8,5 +8,6 @@ function(doc, req) {
 		index: listPath('index', 'by-title'),
 		asset: assetPath(),
 		action: 'edit',
+		loc_action: 'bearbeiten',
 		doc: JSON.stringify(doc) });
 }
