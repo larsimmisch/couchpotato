@@ -10,6 +10,14 @@ input, textarea {
 	font-size:97%;
 }	
 
+#title input {
+	font-size:180%;
+}
+
+#tags input {
+	font-style:italic;
+}
+
 a {
 	text-decoration:none;
 }
@@ -67,8 +75,8 @@ h4 {
 
 #content {
   padding:10px;
-  background:#f2f2f2;
-/*  float:left;*/
+  /* background:#f1f1f1; */
+  /* float:left;*/
   margin:0;
 }
 
@@ -98,6 +106,7 @@ form {
 .toolbar li { 
 	display: inline; 
 }
+
 button { 
 	background: transparent 2px 2px no-repeat; 
 	border: none;
@@ -107,20 +116,25 @@ button {
 	font-size: 95%; 
 	line-height: 16px;
 }
+
 button:hover { 
 	background-position: 2px -30px; 
 	color: #000; 
 }
+
 button:active { 
 	background-position: 2px -62px; 
 	color: #000; 
 }
+
 button.delete { 
 	background-image: url("delete.png"); 
 }
+
 button.add { 
 	background-image: url("add.png"); 
 }
+
 button.save { 
 	background-image: url("save.png"); 
 }
