@@ -7,6 +7,6 @@ function(doc) {
 	}
 
 	if (doc.title) {
-		emit_split(doc.title, doc)
+		emit(doc.title, doc)
 	}
 }

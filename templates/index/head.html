@@ -31,7 +31,7 @@
 		var doc = { '_id': id, '_rev': rev }
 		// alert(JSON.stringify(doc))
 		if (confirm("Delete " + name + '?')) {
-			$.couch.db('addressbook').removeDoc(doc, {
+			$.couch.db('recipes').removeDoc(doc, {
 				success: function(resp) {
 					document.location.reload()
 				}
@@ -44,6 +44,6 @@
     <div id="header">
 	  <h2><a href="<%= index %>">Rezepte</a></h2>
 	  <input id="isearch" type="text" name="key" size=32>
-	  <a id="edit" href="../../_show/create">anlegen</a>
+	  <a id="edit" href="../../_show/create">neues Rezept</a>
 	</div>
     <div id="content">
