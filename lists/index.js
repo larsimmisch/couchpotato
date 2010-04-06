@@ -38,17 +38,15 @@ function(head, req) {
 		send(template(templates.index.head, {
 			index: listPath('index', 'names'),
 			asset: assetPath(),
-		}));
+		}))
 		
 		// loop over view rows, rendering one at a time
-		var row, key;
+		var row
 		while (row = getRow()) {
-			var card = row.value;
-			key = row.key;
-			send(renderRecipe(card));
+			send(renderRecipe(row.value))
 		}
 	
 		// render the html tail template
-		return templates.index.tail;
-	});
-};
+		return templates.index.tail
+	})
+}
