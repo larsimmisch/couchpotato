@@ -26,10 +26,7 @@ function(head, req) {
 
 	function renderRecipe(recipe) {
 		var s = '<p><a href="' + showPath('edit', recipe._id)
-			+ '">' + recipe.title + '</a>' 
-			+ ' <button class="delete" onclick="_delete('
-			+ "'" + recipe._id + "', '" + recipe._rev + "', '" + recipe.title 
-			+ "'" +')">l\u00f6schen' + '</button></p>'
+			+ '">' + recipe.title + '</a></p>\r\n' 
 
 		return s
 	}

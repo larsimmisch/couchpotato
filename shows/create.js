@@ -8,6 +8,7 @@ function(doc, req) {
 		index: listPath('index', 'by-title'),
 		asset: assetPath(),
 		action: 'create',
+		title: 'Neues Rezept',
 		loc_action: 'anlegen',
 		doc: '{}' });
 }
