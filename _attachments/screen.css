@@ -8,6 +8,7 @@ input, textarea {
 	font-family: "Lucida Grande", Verdana, sans-serif;
 	border: 0px;
 	font-size:97%;
+	background:#f4f4f4;
 }	
 
 #title input {
@@ -49,7 +50,7 @@ h4 {
 	color: #aaa;
 }
 
-#description {
+#ldescription {
 	font-size:70%;
 }
 

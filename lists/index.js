@@ -22,12 +22,12 @@ function(head, req) {
 
 		var desc = l.join(', ')
 
-		if (recipe.description) {
-			desc += ': ' + recipe.description
-		}
+		//if (recipe.description) {
+		//	desc += ': ' + recipe.description
+		//}
 
 		if (desc.length) {
-			s += '<span id="description">' + desc + '</span>'
+			s += '<span id="ldescription">' + desc + '</span>'
 		}
 
 		return s + '</p>'
