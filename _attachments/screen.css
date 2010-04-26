@@ -45,9 +45,12 @@ h4 {
 	margin:4px;
 }
 
-.example
-{
+.example {
 	color: #aaa;
+}
+
+#description {
+	font-size:70%;
 }
 
 #header {

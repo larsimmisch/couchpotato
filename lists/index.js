@@ -5,30 +5,32 @@ function(head, req) {
 	// !code vendor/couchapp/template.js
 	// !code vendor/couchapp/json2.js
 
-	function values(obj, keys) {
-		var a = [];
-		for (var i in keys) {
-			var o = obj[keys[i]];
-			if (o) {
-				a.push(o)
+	function renderRecipe(recipe) {
+		var s = '<p><span><a href="' + showPath('edit', recipe._id)
+			+ '">' + recipe.title + '</a></span>\r\n'
+
+		// Build description - ingredients
+		var l = []
+		for (var i in recipe.ingredients) {
+			if (recipe.ingredients[i]) {
+				var n = recipe.ingredients[i].name
+				if (n) {
+					l.push(n)
+				}
 			}
 		}
-		return a
-	}
 
-	function join(obj, key, sep, prefix) {
-		var v = values(obj, key).join(sep)
-		if (v.length && prefix) {
-			return prefix + v
+		var desc = l.join(', ')
+
+		if (recipe.description) {
+			desc += ': ' + recipe.description
 		}
-		return v
-	}
 
-	function renderRecipe(recipe) {
-		var s = '<p><a href="' + showPath('edit', recipe._id)
-			+ '">' + recipe.title + '</a></p>\r\n' 
+		if (desc.length) {
+			s += '<span id="description">' + desc + '</span>'
+		}
 
-		return s
+		return s + '</p>'
 	}
 	
 	provides("html", function() {
