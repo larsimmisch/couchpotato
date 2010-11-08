@@ -9,8 +9,14 @@
 	<script src="<%= asset %>/jquery.example.js"></script>
 	<script type="text/javascript">
 	$(document).ready(function() {
-		$("#isearch").example('search')
-		$("#isearch").focus()
+		var isearch = $("#isearch")
+		isearch.example("search")
+		isearch.focus()
+		var st = "<%= search %>"
+		if (st.length) {
+			isearch.val(st)
+			isearch.select()			
+		}		
 
 		// $("#isearch").width($("#content").width() - 10)
 

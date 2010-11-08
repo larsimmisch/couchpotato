@@ -49,7 +49,7 @@
 		$('#tags > #tags').val(recipe.tags)
 		$('textarea#description').val(recipe.description)
 		if (recipe.ingredients && recipe.ingredients.length) {
-			for (attr in recipe.ingredients[0]) {
+			for (var attr in recipe.ingredients[0]) {
 				$('#ingredients > #ingredient > #' + attr).val(recipe.ingredients[0][attr])
 			}
 			for (var i = 1; i < recipe.ingredients.length; ++i) {

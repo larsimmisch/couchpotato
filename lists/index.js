@@ -20,7 +20,7 @@ function(head, req) {
 			}
 		}
 
-		var desc = l.join(', ')
+		var desc = l.join(', ') + '.'
 
 		//if (recipe.description) {
 		//	desc += ': ' + recipe.description
@@ -35,8 +35,9 @@ function(head, req) {
 	
 	provides("html", function() {
 		send(template(templates.index.head, {
-			index: listPath('index', 'names'),
+			index: listPath('index', 'by-title'),
 			asset: assetPath(),
+			search: req.query.key
 		}))
 		
 		// loop over view rows, rendering one at a time
