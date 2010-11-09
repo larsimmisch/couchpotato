@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-'''This script is a one-off that imports my Filemaker recipes - exported to cvs
+'''This script is a one-off that imports my Filemaker recipes - exported to csv
 - into couchpotato
 '''
 import sys

@@ -11,6 +11,13 @@ input, textarea {
 	background:#f4f4f4;
 }	
 
+#import textarea {
+  font-family: "DejaVu Sans Mono",Menlo,Courier,monospace;
+	border: 0px;
+	font-size:97%;
+	background:#f4f4f4;
+}
+
 #title input {
 	font-size:180%;
 }
@@ -73,7 +80,7 @@ h4 {
 	color:#fff;
 }
 
-#header #login, #header #edit {
+#header #login, #header #menu {
 	float:right;
 }
 

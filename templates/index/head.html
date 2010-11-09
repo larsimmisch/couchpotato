@@ -13,14 +13,12 @@
 		isearch.example("search")
 		isearch.focus()
 		var st = "<%= search %>"
-		if (st.length) {
-			isearch.val(st)
-			isearch.select()			
-		}		
+		isearch.val(st)
+		isearch.select()			
 
 		// $("#isearch").width($("#content").width() - 10)
 
-        $("#isearch").keypress(function(e) {
+        isearch.keypress(function(e) {
 			code = e.keyCode ? e.keyCode : e.which
 			if (code == 13) {
 				var href = document.location.protocol + '//' 
@@ -29,6 +27,7 @@
 				if (key.length) {
 					href = href + '?key=' + JSON.stringify(key.toLowerCase())
 				}
+				isearch.focusout()
 				document.location.href = href
 			}
         })
@@ -50,6 +49,9 @@
     <div id="header">
 	  <h2><a href="<%= index %>">Rezepte</a></h2>
 	  <input id="isearch" type="text" name="key" size=32>
-	  <a id="edit" href="../../_show/create">neues Rezept</a>
+	  <div id="menu">
+		<a href="../../_show/import">importieren</a>
+		<a href="../../_show/create">neu</a>
+	  </div>
 	</div>
     <div id="content">
