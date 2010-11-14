@@ -2,11 +2,12 @@
 <html>
   <head>
     <title>Couchpotato</title>
-    <link rel="stylesheet" href="../../screen.css" type="text/css"/>
+    <link rel="stylesheet" href="<%= asset %>/screen.css" type="text/css"/>
 	<script src="/_utils/script/json2.js"></script>
 	<script src="/_utils/script/jquery.js"></script>
 	<script src="/_utils/script/jquery.couch.js"></script>
 	<script src="<%= asset %>/jquery.example.js"></script>
+	<script src="<%= asset %>/recipe.js"></script>
 	<script type="text/javascript">
 	$(document).ready(function() {
 		var isearch = $("#isearch")
@@ -17,20 +18,7 @@
 		isearch.select()			
 
 		// $("#isearch").width($("#content").width() - 10)
-
-        isearch.keypress(function(e) {
-			code = e.keyCode ? e.keyCode : e.which
-			if (code == 13) {
-				var href = document.location.protocol + '//' 
-					+ document.location.host + document.location.pathname
-				var key = $(this).val()
-				if (key.length) {
-					href = href + '?key=' + JSON.stringify(key.toLowerCase())
-				}
-				isearch.focusout()
-				document.location.href = href
-			}
-        })
+        isearch.keypress(isearch_key)
 	})
     function _delete(id, rev, name) {
 		var doc = { '_id': id, '_rev': rev }

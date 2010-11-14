@@ -4,34 +4,7 @@ function(head, req) {
 	// !code vendor/couchapp/date.js
 	// !code vendor/couchapp/template.js
 	// !code vendor/couchapp/json2.js
-
-	function renderRecipe(recipe) {
-		var s = '<p><span><a href="' + showPath('edit', recipe._id)
-			+ '">' + recipe.title + '</a></span>\r\n'
-
-		// Build description - ingredients
-		var l = []
-		for (var i in recipe.ingredients) {
-			if (recipe.ingredients[i]) {
-				var n = recipe.ingredients[i].name
-				if (n) {
-					l.push(n)
-				}
-			}
-		}
-
-		var desc = l.join(', ') + '.'
-
-		//if (recipe.description) {
-		//	desc += ': ' + recipe.description
-		//}
-
-		if (desc.length) {
-			s += '<span id="ldescription">' + desc + '</span>'
-		}
-
-		return s + '</p>'
-	}
+	// !code _attachments/recipe.js
 	
 	provides("html", function() {
 		send(template(templates.index.head, {

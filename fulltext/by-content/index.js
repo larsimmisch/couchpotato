@@ -1,7 +1,6 @@
 function(doc) { 
-	var ret = null
 	if (doc.type == 'recipe') {
-		ret = new Document()
+		var ret = new Document()
 		ret.add(doc.title)
 		ret.add(doc.description)
 
@@ -10,7 +9,11 @@ function(doc) {
 				ret.add(doc.ingredients[i])
 			}
 		}
+		if (doc.tags)
+			ret.add(doc.tags)
+
+		return ret
 	}
 
-	return ret 
+	return null
 }

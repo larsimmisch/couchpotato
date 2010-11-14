@@ -7,6 +7,7 @@
 	<script src="/_utils/script/jquery.js"></script>
 	<script src="/_utils/script/jquery.couch.js"></script>
 	<script src="<%= asset %>/jquery.example.js"></script>
+	<script src="<%= asset %>/recipe.js"></script>
 	<script type="text/javascript">
 	var recipe = <%= doc %>
 	function addIngredient(vdesc, vquantity, vunit) {
@@ -111,21 +112,7 @@
 				})
 			})
 		}
-		$("#isearch").keypress(function (e) {
-			code = e.keyCode ? e.keyCode : e.which;
-			if (code == 13) {
-				// Reload the page from the database
-				var p = document.location.pathname.split('/')
-				p.splice(4, 3, '_list', 'index', 'by-title')
-				var href = document.location.protocol 
-					+ '//' + document.location.host + p.join('/')
-				var key = $(this).val()
-				if (key.length) {
-					href = href + '?key=' + JSON.stringify(key)
-				}
-				document.location.href = href
-			}
-		})
+		$("#isearch").keypress(isearch_key)
 		$('#ingredients > #ingredient > .add').click(function(e) { 
 			e.preventDefault()
 			addIngredient(null, null, null) })
