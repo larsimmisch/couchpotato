@@ -1,7 +1,7 @@
 {	
 	"env": {
         "default": {
-			"db": "http://lars:BlaueBank@localhost:5984/recipes"
+			"db": "http://lars:BlaueBank@borel:5984/recipes"
 	   	}
 	}
 }

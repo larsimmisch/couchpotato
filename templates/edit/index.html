@@ -9,134 +9,137 @@
 	<script src="<%= asset %>/jquery.example.js"></script>
 	<script src="<%= asset %>/recipe.js"></script>
 	<script type="text/javascript">
-	var recipe = <%= doc %>
-	function addIngredient(vdesc, vquantity, vunit) {
+var recipe = <%= doc %>
+function addIngredient(vdesc, vquantity, vunit) {
 		
-		function addInput(id, name, size, value) {
-			var input = document.createElement('input')
-			input.setAttribute('type', 'text')
-			input.setAttribute('size', size)
-			input.setAttribute('id', id)
-			input.setAttribute('name', name)
-			if (value) input.value = value
-			$(input).example(name)
-			return input
-		}
-
-		var desc = addInput('name', 'Zutat', 30, vdesc)
-		var quantity = addInput('quantity', 'Menge', 5, vquantity)		
-		var unit = addInput('unit', 'Einheit', 5, vunit)
-		var button = document.createElement('button')
-		button.setAttribute('class', 'delete')
-		var para = $('p#ingredients')
-		var br = document.createElement('br')
-		var span = $(document.createElement('span'))
-		span.attr('id', 'ingredient')
-		para.append(br)
-		span.append(desc)
-		span.append(quantity)
-		span.append(unit)
-		span.append(button)
-		para.append($(span))
-		$(button).click(function(e) {
-			e.preventDefault()
-			para[0].removeChild(br)
-			para[0].removeChild(span[0])
-		})
+	function addInput(id, name, size, value) {
+		var input = document.createElement('input')
+		input.setAttribute('type', 'text')
+		input.setAttribute('size', size)
+		input.setAttribute('id', id)
+		input.setAttribute('name', name)
+		if (value) input.value = value
+		$(input).example(name)
+		return input
 	}
-	function fromRecipe() {
-		$('#title > #title').val(recipe.title)
-		$('#serves > #serves').val(recipe.serves)
-		$('#tags > #tags').val(recipe.tags)
-		$('textarea#description').val(recipe.description)
-		if (recipe.ingredients && recipe.ingredients.length) {
-			for (var attr in recipe.ingredients[0]) {
-				$('#ingredients > #ingredient > #' + attr).val(recipe.ingredients[0][attr])
-			}
-			for (var i = 1; i < recipe.ingredients.length; ++i) {
-				addIngredient(recipe.ingredients[i].name,
-							  recipe.ingredients[i].quantity,
-							  recipe.ingredients[i].unit)
-			}
+	
+	var desc = addInput('name', 'Zutat', 30, vdesc)
+	var quantity = addInput('quantity', 'Menge', 5, vquantity)		
+	var unit = addInput('unit', 'Einheit', 5, vunit)
+	var button = document.createElement('button')
+	button.setAttribute('class', 'delete')
+	var para = $('p#ingredients')
+	var br = document.createElement('br')
+	var span = $(document.createElement('span'))
+	span.attr('id', 'ingredient')
+	para.append(br)
+	span.append(desc)
+	span.append(quantity)
+	span.append(unit)
+	span.append(button)
+	para.append($(span))
+	$(button).click(function(e) {
+		e.preventDefault()
+		para[0].removeChild(br)
+		para[0].removeChild(span[0])
+	})
+}
+function fromRecipe() {
+	$('#title > #title').val(recipe.title)
+	$('#serves > #serves').val(recipe.serves)
+	$('#tags > #tags').val(recipe.tags)
+	$('textarea#description').val(recipe.description)
+	if (recipe.ingredients && recipe.ingredients.length) {
+		for (var attr in recipe.ingredients[0]) {
+			$('#ingredients > #ingredient > #' + attr).val(recipe.ingredients[0][attr])
+		}
+		for (var i = 1; i < recipe.ingredients.length; ++i) {
+			addIngredient(recipe.ingredients[i].name,
+						  recipe.ingredients[i].quantity,
+						  recipe.ingredients[i].unit)
 		}
 	}
-	function toRecipe() {
-		function ingredients() {
-			var a = null
-			$('p#ingredients > #ingredient').each(function(i) {
-				var d = null
-				$(this).children('input').each(function(i) {
-					if (this.value && this.value.length 
-						&& this.value != this.name) {
-						if (!d) d = {}
-						d[this.id] = this.value
-					}
-				})
+}
+function toRecipe() {
+	function ingredients() {
+		var a = null
+		$('p#ingredients > #ingredient').each(function(i) {
+			var d = null
+			$(this).children('input').each(function(i) {
+				if (this.value && this.value.length 
+					&& this.value != this.name) {
+					if (!d) d = {}
+					d[this.id] = this.value
+				}
+			})
 				if (!a) a = []
-				a.push(d)
-			})
+			a.push(d)
+		})
 			return a
-		}
-		var d =  { '_id': recipe._id, '_rev': recipe._rev,
-				   'type': 'recipe',
-				   'serves': $('#serves > #serves').val(),
-				   'tags': $('#tags > #tags').val(),
-				   'title': $('#title > #title').val(),
-				   'ingredients': ingredients(),
-				   'description': $('#description').val() }
-
-		// delete empty attributes
-		for (attr in d) {
-			if (!d[attr]) {
-				delete d[attr]
-			}
-		}
-
-		return d
 	}
-	$(document).ready(function() {
-		if('<%= action %>' == 'create') {
-			$('.delete').remove()
+	var d =  { '_id': recipe._id, '_rev': recipe._rev,
+			   'type': 'recipe',
+			   'serves': $('#serves > #serves').val(),
+			   'tags': $('#tags > #tags').val(),
+			   'title': $('#title > #title').val(),
+			   'ingredients': ingredients(),
+			   'description': $('#description').val() }
+	
+	// delete empty attributes
+	for (attr in d) {
+		if (!d[attr]) {
+			delete d[attr]
 		}
-		else {
-			$('.delete').click(function(e) {
-				e.preventDefault()
-				var doc = { '_id': recipe._id, '_rev': recipe._rev }
-				// alert(JSON.stringify(doc))
-				$.couch.db('recipes').removeDoc(doc, {
-					success: function(resp) {
-						// alert(JSON.stringify(resp))
-						document.location.href =  document.location.protocol 
-							+ '//' + document.location.host + '<%= index %>'
-					}
-				})
-			})
+	}
+	
+	return d
+}
+function onSubmit(e) {
+	e.preventDefault()
+	//alert(JSON.stringify(toRecipe()))
+	$.couch.db('recipes').saveDoc(toRecipe(), { 
+		success: function(resp) {
+			// alert(JSON.stringify(resp))
+			var p = document.location.pathname.split('/')
+			p.splice(5, 2, 'edit', resp.id)
+			document.location.href = document.location.protocol 
+				+ '//' + document.location.host + p.join('/')
 		}
-		$("#isearch").keypress(isearch_key)
-		$('#ingredients > #ingredient > .add').click(function(e) { 
+	})
+}
+
+$(document).ready(function() {
+	if('<%= action %>' == 'create') {
+		$('.delete').remove()
+	}
+	else {
+		$('.delete').click(function(e) {
 			e.preventDefault()
-			addIngredient(null, null, null) })
-		fromRecipe()
-		$('input').each(function() {
-			$(this).example(this.name)
-		})
-		$('textarea').each(function() {
-			$(this).example(this.name)
-		})
-		$("form#edit").submit(function(e) {
-			e.preventDefault()
-			$.couch.db('recipes').saveDoc(toRecipe(), { 
-				// alert(JSON.stringify(toRecipe()))
+			var doc = { '_id': recipe._id, '_rev': recipe._rev }
+			// alert(JSON.stringify(doc))
+			$.couch.db('recipes').removeDoc(doc, {
 				success: function(resp) {
 					// alert(JSON.stringify(resp))
-					var p = document.location.pathname.split('/')
-					p.splice(5, 2, 'edit', resp.id)
-					document.location.href = document.location.protocol 
-						+ '//' + document.location.host + p.join('/')
+					document.location.href =  document.location.protocol 
+						+ '//' + document.location.host + '<%= index %>'
 				}
 			})
 		})
+	}
+	$('.save').click(onSubmit)
+	$("#isearch").keypress(isearch_key)
+	$('#ingredients > #ingredient > .add').click(function(e) { 
+		e.preventDefault()
+		addIngredient(null, null, null) })
+	fromRecipe()
+	$('input').each(function() {
+		$(this).example(this.name)
 	})
+	$('textarea').each(function() {
+		$(this).example(this.name)
+	})
+		$("form#edit").submit(onSubmit)
+})
     </script>
 	<title><%= title %></title>
   </head>
