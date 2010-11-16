@@ -28,6 +28,8 @@ function addIngredient(vdesc, vquantity, vunit) {
 	var unit = addInput('unit', 'Einheit', 5, vunit)
 	var button = document.createElement('button')
 	button.setAttribute('class', 'delete')
+    // Firefox hates buttons without text
+	button.innerHTML = '&nbsp;'
 	var para = $('p#ingredients')
 	var br = document.createElement('br')
 	var span = $(document.createElement('span'))
@@ -94,7 +96,7 @@ function toRecipe() {
 	
 	return d
 }
-function onSubmit(e) {
+function save(e) {
 	e.preventDefault()
 	//alert(JSON.stringify(toRecipe()))
 	$.couch.db('recipes').saveDoc(toRecipe(), { 
@@ -126,7 +128,7 @@ $(document).ready(function() {
 			})
 		})
 	}
-	$('.save').click(onSubmit)
+	$('.save').click(save)
 	$("#isearch").keypress(isearch_key)
 	$('#ingredients > #ingredient > .add').click(function(e) { 
 		e.preventDefault()
@@ -138,7 +140,6 @@ $(document).ready(function() {
 	$('textarea').each(function() {
 		$(this).example(this.name)
 	})
-		$("form#edit").submit(onSubmit)
 })
     </script>
 	<title><%= title %></title>
@@ -159,7 +160,7 @@ $(document).ready(function() {
 		</p>
 		<p id="ingredients">
 		  <span id="ingredient">
-			<input type="text" size="30" id="name" name="Zutat"/><input type="text" size="5" id="quantity" name="Menge"/><input type="text" size="5" id="unit" name="Einheit"/><button class="add">
+			<input type="text" size="30" id="name" name="Zutat"/><input type="text" size="5" id="quantity" name="Menge"/><input type="text" size="5" id="unit" name="Einheit"/><button class="add">&nbsp;</button>
 		  </span>
 		</p>
 		<textarea id="description" cols="80" rows="14" name="Beschreibung"></textarea>
