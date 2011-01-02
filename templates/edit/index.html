@@ -148,7 +148,10 @@ $(document).ready(function() {
     <div id="header">
       <h2><a href="<%= index %>">Rezepte</a></h2>
 	  <input id="isearch" type="text" name="search" size=32>
-	  <a id="menu" href="../../_show/import">importieren</a>
+	  <div id="menu">
+		<a href="<%= asset %>/_show/import">importieren</a>
+		<a href="<%= asset %>/_show/create">neu</a>
+	  </div>
 	</div>
 	<div id="content">
 	  <form id="edit">
