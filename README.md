@@ -1,16 +1,14 @@
-Overview
-========
+# Overview
 
 couchpotato is a CouchApp for storing recipes. It is bare-bones and not 
 really intended for use by anyone except me yet.
 
-Features
-========
+# Features
 
 * Fulltext searching using Lucene
 
-Installation
-============
+# Installation
+
 
 Install couchdb (obviously)
 
@@ -31,8 +29,7 @@ Adjust .couchapprc and:
 
 > couchapp push
 
-Future plans
-============
+# Future plans
 
 * MealMaster import and export (in progress)
 * Nutrition database
