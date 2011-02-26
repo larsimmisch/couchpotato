@@ -47,10 +47,21 @@ function addIngredient(vdesc, vquantity, vunit) {
 	})
 }
 function fromRecipe() {
+	var url = new RegExp(
+		'http\://[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(/\S*)?', '')
+
 	$('#title > #title').val(recipe.title)
 	$('#serves > #serves').val(recipe.serves)
-	$('#tags > #tags').val(recipe.tags)
+	$('#misc > #tags').val(recipe.tags)
+	$('#misc > #source').val(recipe.source)
 	$('textarea#description').val(recipe.description)
+	
+	if (url.test(recipe.source)) {
+		var a = $('#misc > #url')
+		a.attr('href', recipe.source)
+		a.attr('class', 'url')
+	}
+
 	if (recipe.ingredients && recipe.ingredients.length) {
 		for (var attr in recipe.ingredients[0]) {
 			$('#ingredients > #ingredient > #' + attr).val(recipe.ingredients[0][attr])
@@ -82,7 +93,8 @@ function toRecipe() {
 	var d =  { '_id': recipe._id, '_rev': recipe._rev,
 			   'type': 'recipe',
 			   'serves': $('#serves > #serves').val(),
-			   'tags': $('#tags > #tags').val(),
+			   'tags': $('#misc > #tags').val(),
+			   'source': $('#misc > #source').val(),
 			   'title': $('#title > #title').val(),
 			   'ingredients': ingredients(),
 			   'description': $('#description').val() }
@@ -167,8 +179,9 @@ $(document).ready(function() {
 		  </span>
 		</p>
 		<textarea id="description" cols="80" rows="14" name="Beschreibung"></textarea>
-		<p id="tags">
-		  Tags:<input type="text" size="80" id="tags" name="Tags" />
+		<p id="misc">
+		  Tags: <input type="text" size="80" id="tags" name="Tags" /><br>
+		  <a id="url">Quelle</a>: <input type="text" size="80" id="source" name="Quelle"/>
 		</p>
 		<button class="save">sichern</button>
 		<button class="delete">l\u00f6schen</button>
