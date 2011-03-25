@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+	<head>
+	<link rel="stylesheet" href="<%= asset %>/screen.css" type="text/css"/>
+	<style type="text/css">
+	</style>
+	<script src="/_utils/script/jquery.js"></script>
+	<script src="/_utils/script/jquery.couch.js"></script>
+	<script src="<%= asset %>/jquery.example.js"></script>
+	<script src="<%= asset %>/path.js"></script>
+	<script src="<%= asset %>/recipe.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function() {
+		var isearch = $("#isearch")
+		isearch.keypress(isearch_key)
+		$('input').each(function() {
+			$(this).example(this.name)
+		})
+		var key = /[?]q=(.*)/.exec(document.location.search)[1]
+		isearch.focus()
+		isearch.val(key)
+		isearch.select()
+
+		// Lucene URL example:
+		// http://localhost:5984/recipes/_fti/_design/couchpotato/
+		// by-content?q=zwiebeln&include_docs=true
+		var p = document.location.pathname.split('/').splice(0, 2)
+		p.push('_fti', '_design', 'couchpotato', 'by-content')
+		var url = document.location.protocol 
+			+ '//' + document.location.host + p.join('/')
+			+ '?q=' + JSON.stringify(key) + '&include_docs=true'
+
+		$.getJSON(url, function(data) {
+			var html = ''
+			for (var i in data.rows) {
+				html += renderRecipe(data.rows[i].doc)
+			}
+			$('#content').html(html)
+		})
+	})
+    </script>
+	<title><%= title %></title>
+  </head>
+  <body>
+    <div id="header">
+      <h2><a href="<%= index %>">Rezepte</a></h2>
+	  <input id="isearch" type="text" name="search" size=32>
+	  <div id="menu">
+		<a href="../_show/import">importieren</a>
+		<a href="../_show/create">neu</a>
+	  </div>
+	</div>
+	<div id="content">
+	</div>
+  </body>
+</html>
