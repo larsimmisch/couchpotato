@@ -22,20 +22,28 @@
 		isearch.select()
 
 		// Lucene URL example:
-		// http://localhost:5984/recipes/_fti/_design/couchpotato/
+		// http://localhost:5984/_fti/local/recipes/_design/couchpotato/
 		// by-content?q=zwiebeln&include_docs=true
-		var p = document.location.pathname.split('/').splice(0, 2)
-		p.push('_fti', '_design', 'couchpotato', 'by-content')
+		var db = document.location.pathname.split('/')[1]
+		var pc = ['', '_fti', 'local', db, '_design', 'couchpotato', 
+				  'by-content']
 		var url = document.location.protocol 
-			+ '//' + document.location.host + p.join('/')
+			+ '//' + document.location.host + pc.join('/')
 			+ '?q=' + JSON.stringify(key) + '&include_docs=true'
 
-		$.getJSON(url, function(data) {
-			var html = ''
-			for (var i in data.rows) {
-				html += renderRecipe(data.rows[i].doc)
+		$.ajax({
+			url: url,
+			dataType: 'json',
+			success: function(data) {
+				var html = ''
+				for (var i in data.rows) {
+					html += renderRecipe(data.rows[i].doc)
+				}
+				$('#content').html(html)
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				alert('Search failed :' + textStatus + ' ' + errorThrown) 
 			}
-			$('#content').html(html)
 		})
 	})
     </script>

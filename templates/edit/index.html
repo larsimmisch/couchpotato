@@ -26,10 +26,10 @@ function addIngredient(vdesc, vquantity, vunit) {
 	var desc = addInput('name', 'Zutat', 30, vdesc)
 	var quantity = addInput('quantity', 'Menge', 5, vquantity)		
 	var unit = addInput('unit', 'Einheit', 5, vunit)
-	var button = document.createElement('button')
-	button.setAttribute('class', 'delete')
+	var bdelete = document.createElement('button')
+	bdelete.setAttribute('class', 'delete')
     // Firefox hates buttons without text
-	button.innerHTML = '&nbsp;'
+	bdelete.innerHTML = '&nbsp;'
 	var para = $('p#ingredients')
 	var br = document.createElement('br')
 	var span = $(document.createElement('span'))
@@ -38,9 +38,9 @@ function addIngredient(vdesc, vquantity, vunit) {
 	span.append(desc)
 	span.append(quantity)
 	span.append(unit)
-	span.append(button)
+	span.append(bdelete)
 	para.append($(span))
-	$(button).click(function(e) {
+	$(bdelete).click(function(e) {
 		e.preventDefault()
 		para[0].removeChild(br)
 		para[0].removeChild(span[0])
@@ -88,7 +88,7 @@ function toRecipe() {
 				if (!a) a = []
 			a.push(d)
 		})
-			return a
+		return a
 	}
 	var d =  { '_id': recipe._id, '_rev': recipe._rev,
 			   'type': 'recipe',
@@ -178,7 +178,8 @@ $(document).ready(function() {
 			<input type="text" size="30" id="name" name="Zutat"/><input type="text" size="5" id="quantity" name="Menge"/><input type="text" size="5" id="unit" name="Einheit"/><button class="add">&nbsp;</button>
 		  </span>
 		</p>
-		<textarea id="description" cols="80" rows="14" name="Beschreibung"></textarea>
+		<textarea id="description" rows="14" 
+				  name="Beschreibung"></textarea>
 		<p id="misc">
 		  Tags: <input type="text" size="80" id="tags" name="Tags" /><br>
 		  <a id="url">Quelle</a>: <input type="text" size="80" id="source" name="Quelle"/>
