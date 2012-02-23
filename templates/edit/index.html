@@ -4,52 +4,42 @@
 	<link rel="stylesheet" href="<%= asset %>/screen.css" type="text/css"/>
 	<style type="text/css">
 	</style>
-	<script src="/_utils/script/jquery.js"></script>
+	<script src="<%= asset %>/jquery-1.7.1.min.js"></script>
 	<script src="/_utils/script/jquery.couch.js"></script>
 	<script src="<%= asset %>/jquery.example.js"></script>
 	<script src="<%= asset %>/recipe.js"></script>
 	<script type="text/javascript">
 var recipe = <%= doc %>
-function addIngredient(vdesc, vquantity, vunit) {
-		
-	function addInput(id, name, size, value) {
-		var input = document.createElement('input')
-		input.setAttribute('type', 'text')
-		input.setAttribute('size', size)
-		input.setAttribute('id', id)
-		input.setAttribute('name', name)
-		if (value) input.value = value
-		input = $(input)
-		input.example(name)
-		return input
-	}
+function add_ingredient(vdesc, vquantity, vunit) {
 	
-	var desc = addInput('name', 'Zutat', 30, vdesc)
-	var quantity = addInput('quantity', 'Menge', 5, vquantity)		
-	var unit = addInput('unit', 'Einheit', 5, vunit)
-	var bdelete = document.createElement('button')
-	bdelete.setAttribute('class', 'delete')
-	// Firefox hates buttons without text
-	bdelete.innerHTML = '&nbsp;'
-	var para = $('p#ingredients')
-	var br = document.createElement('br')
-	var span = $(document.createElement('span'))
-	span.attr('id', 'ingredient')
-	para.append(br)
-	span.append(desc)
-	span.append(quantity)
-	span.append(unit)
-	span.append(bdelete)
-	para.append($(span))
-	$(bdelete).click(function(e) {
+    function _value(input, value) {
+        if (value)
+            input.val(value)
+        else
+            input.example(input.attr('name'))
+    }
+
+    $('p#ingredients').append(
+        '<br><span id="ingredient">' + 
+            '<input type="text" size="30" id="name" name="Zutat">' +
+            '<input type="text" size="5" id="quantity" name="Menge">' +
+            '<input type="text" size="5" id="unit" name="Einheit">' + 
+            '<button class="delete">&nbsp;</button></span>')
+
+    var last = $('span#ingredient').last()
+    _value(last.find('input#name'), vdesc)
+    _value(last.find('input#quantity'), vquantity)
+    _value(last.find('input#unit'), vunit)
+
+	last.find('button').click(function(e) {
 		e.preventDefault()
-		para[0].removeChild(br)
-		para[0].removeChild(span[0])
+		last.remove()
 	})
 
-	return desc;
+	return last.find('input#name');
 }
-function fromRecipe() {
+
+function from_recipe() {
 	var url = new RegExp(
 		'http\://[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(/\S*)?', '')
 
@@ -70,13 +60,13 @@ function fromRecipe() {
 			$('#ingredients > #ingredient > #' + attr).val(recipe.ingredients[0][attr])
 		}
 		for (var i = 1; i < recipe.ingredients.length; ++i) {
-			addIngredient(recipe.ingredients[i].name,
+			add_ingredient(recipe.ingredients[i].name,
 						  recipe.ingredients[i].quantity,
 						  recipe.ingredients[i].unit)
 		}
 	}
 }
-function toRecipe() {
+function to_recipe() {
 	function ingredients() {
 		var a = null
 		$('p#ingredients > #ingredient').each(function(i) {
@@ -113,8 +103,8 @@ function toRecipe() {
 }
 function save(e) {
 	e.preventDefault()
-	//alert(JSON.stringify(toRecipe()))
-	$.couch.db('recipes').saveDoc(toRecipe(), { 
+	//alert(JSON.stringify(to_recipe()))
+	$.couch.db('recipes').saveDoc(to_recipe(), { 
 		success: function(resp) {
 			// alert(JSON.stringify(resp))
 			var p = document.location.pathname.split('/')
@@ -147,10 +137,10 @@ $(document).ready(function() {
 	$("#isearch").keypress(isearch_key)
 	$('#ingredients > #ingredient > .add').click(function(e) { 
 		e.preventDefault()
-		var input = addIngredient(null, null, null)
+		var input = add_ingredient()
 		input.focus()
 	})
-	fromRecipe()
+	from_recipe()
 	$('input').each(function() {
 		$(this).example(this.name)
 	})
