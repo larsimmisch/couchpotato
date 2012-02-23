@@ -19,7 +19,8 @@ function addIngredient(vdesc, vquantity, vunit) {
 		input.setAttribute('id', id)
 		input.setAttribute('name', name)
 		if (value) input.value = value
-		$(input).example(name)
+		input = $(input)
+		input.example(name)
 		return input
 	}
 	
@@ -28,7 +29,7 @@ function addIngredient(vdesc, vquantity, vunit) {
 	var unit = addInput('unit', 'Einheit', 5, vunit)
 	var bdelete = document.createElement('button')
 	bdelete.setAttribute('class', 'delete')
-    // Firefox hates buttons without text
+	// Firefox hates buttons without text
 	bdelete.innerHTML = '&nbsp;'
 	var para = $('p#ingredients')
 	var br = document.createElement('br')
@@ -45,6 +46,8 @@ function addIngredient(vdesc, vquantity, vunit) {
 		para[0].removeChild(br)
 		para[0].removeChild(span[0])
 	})
+
+	return desc;
 }
 function fromRecipe() {
 	var url = new RegExp(
@@ -90,7 +93,7 @@ function toRecipe() {
 		})
 		return a
 	}
-	var d =  { '_id': recipe._id, '_rev': recipe._rev,
+	var d =	 { '_id': recipe._id, '_rev': recipe._rev,
 			   'type': 'recipe',
 			   'serves': $('#serves > #serves').val(),
 			   'tags': $('#misc > #tags').val(),
@@ -144,7 +147,9 @@ $(document).ready(function() {
 	$("#isearch").keypress(isearch_key)
 	$('#ingredients > #ingredient > .add').click(function(e) { 
 		e.preventDefault()
-		addIngredient(null, null, null) })
+		var input = addIngredient(null, null, null)
+		input.focus()
+	})
 	fromRecipe()
 	$('input').each(function() {
 		$(this).example(this.name)
@@ -153,12 +158,12 @@ $(document).ready(function() {
 		$(this).example(this.name)
 	})
 })
-    </script>
+	</script>
 	<title><%= title %></title>
   </head>
   <body>
-    <div id="header">
-      <h2><a href="<%= index %>">Rezepte</a></h2>
+	<div id="header">
+	  <h2><a href="<%= index %>">Rezepte</a></h2>
 	  <input id="isearch" type="text" name="search" size=32>
 	  <div id="menu">
 		<a href="<%= asset %>/_show/import">importieren</a>
